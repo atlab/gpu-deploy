@@ -8,6 +8,5 @@ setup(
     description='GPU management for nvidia-docker',
     author='Eric Y. Wang',
     author_email='eric.wang2@bcm.edu',
-    py_modules=['gpu_deploy'],
-    python_requires='<3'
+    py_modules=['gpu_deploy']
 )
