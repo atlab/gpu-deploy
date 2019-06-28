@@ -61,10 +61,13 @@ def free_gpu_slots():
         gpus = gpu_devices()
         containers = run('docker ps -q --no-trunc').split()
         for container in containers:
-            host_devs = run("docker exec {} /bin/ls /dev".format(container))
-            for dev in re.findall(r'nvidia(?P<device>\d+)', host_devs):
-                if dev in gpus:
-                    gpus.remove(dev)
+            try:
+                host_devs = run("docker exec {} /bin/ls /dev".format(container))
+                for dev in re.findall(r'nvidia(?P<device>\d+)', host_devs):
+                    if dev in gpus:
+                        gpus.remove(dev)
+            except:
+                continue
     return gpus
 
 
