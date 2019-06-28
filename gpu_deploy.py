@@ -59,11 +59,11 @@ def gpu_devices():
 def free_gpu_slots():
     with hide('output', 'running'):
         gpus = gpu_devices()
-        # containers = run('docker ps -q --no-trunc').split()
         containers = run("docker ps --format '{{.Names}}'").split()
         for container in containers:
-            print(container)
-            host_devs = run("docker exec {} /bin/ls /dev".format(container), warn_only=True)
+            if container.startswith('k8s_'):
+                continue
+            host_devs = run("docker exec {} /bin/ls /dev".format(container))
             for dev in re.findall(r'nvidia(?P<device>\d+)', host_devs):
                 if dev in gpus:
                     gpus.remove(dev)
