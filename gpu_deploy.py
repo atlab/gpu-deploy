@@ -179,7 +179,7 @@ class Deploy():
 
             run('(docker ps -a | grep {name}) && docker rm {name}'.format(name=name),
                 warn_only=True)
-            run('docker-compose build --no-cache --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" --build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)" {}'.format(_service))
+            run('docker-compose build --pull --no-cache --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" --build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)" {}'.format(_service))
             run('docker-compose run -d -e NVIDIA_VISIBLE_DEVICES=none {} --name {} {}'.format(args, name, service))
 
     def deploy(self, service, script=None, n=10, gpus=1, token=None, pyargs=None):
@@ -194,7 +194,7 @@ class Deploy():
 
         self.initialize()
         with cd(self.host_docker_dir):
-            run('docker-compose build --no-cache --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" --build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)" {}'.format(service))
+            run('docker-compose build --pull --no-cache --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" --build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)" {}'.format(service))
             bare_run_str = 'docker-compose run -d'
             free_gpus = sorted(free_gpu_slots())
             gpu_i = 0
