@@ -209,7 +209,7 @@ class Deploy():
                     break
 
                 name = env.user + '_' + service + '_{script}_gpu_' + '_'.join(gpu_ids)
-                args = ' -e NVIDIA_VISIBLE_DEVICES={}'.format(','.join(gpu_ids))
+                args = ' -e NVIDIA_VISIBLE_DEVICES={} -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video'.format(','.join(gpu_ids))
                 gpu_run_str = bare_run_str + args
 
                 if script is None:
