@@ -168,7 +168,7 @@ class Deploy():
                 if token is not None:
                     service += ' --NotebookApp.token={}'.format(token)
             else:
-                name = name.format(script)
+                name = name.format(script=script)
                 args = ' -v {}:/scripts'.format(join(self.host_scripts_dir))
                 args += ' --entrypoint "python3 /scripts/{}.py"'.format(script)
 
