@@ -153,7 +153,7 @@ class Deploy():
         remove_old_images()
         run('rm -rf ' + self.host_dir)
 
-    def no_gpu_deploy(self, service, script=None, token=None):
+    def no_gpu_deploy(self, service, script=None, token=None, port=None):
         _service = service
 
         name = env.user + '_' + service + '_{script}_no_gpu'
@@ -164,7 +164,10 @@ class Deploy():
 
             if script is None:
                 name = name.format(script='notebook')
-                args = '-p 8888:8888'
+                if port is None:
+                    args = '-p 8888:8888'
+                else:
+                    args = '-p {}:8888'.format(port)
                 if token is not None:
                     service += ' --NotebookApp.token={}'.format(token)
             else:
