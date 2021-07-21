@@ -212,12 +212,14 @@ class Deploy():
                     break
 
                 name = env.user + '_' + service + '_{script}_gpu_' + '_'.join(gpu_ids)
-                args = ' -e NVIDIA_VISIBLE_DEVICES={} -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video'.format(','.join(gpu_ids))
+                args = ' -e NVIDIA_VISIBLE_DEVICES={} -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video'.format(
+                    ','.join(gpu_ids))
+
                 gpu_run_str = bare_run_str + args
 
                 if script is None:
                     name = name.format(script='notebook')
-                    args = '-p 444{}:8888'.format(gpu_ids[0])
+                    args = '{} -p 444{}:8888'.format(pyargs, gpu_ids[0])
                     if token is not None:
                         service += ' --NotebookApp.token={}'.format(token)
                 else:
